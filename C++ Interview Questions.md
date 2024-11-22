@@ -144,6 +144,27 @@ When a class declares another class as its friend, it is giving complete access 
 * ￼**What is virtual function?**  
 Virtual function is the member function of a class that can be overriden in its derived class. It is declared with virtual keyword. Virtual function call is resolved at run-time (dynamic binding) whereas the non-virtual member functions are resolved at compile time (static binding).
 
+* a **virtual function** allows runtime polymorphism, ensuring the correct derived class function is called via a base class pointer or reference. Without `virtual`, shadowing occurs, The base class's function is hidden, but calling the function through a base class pointer or reference will still invoke the base class version, not the derived one.
+
+```cpp
+class Base {
+public:
+    virtual void show() { cout << "Base\n"; } // Virtual function
+    void shadow() { cout << "Base shadow\n"; } // Non-virtual
+};
+class Derived : public Base {
+public:
+    void show() override { cout << "Derived\n"; } // Overrides
+    void shadow() { cout << "Derived shadow\n"; } // Shadows
+};
+int main() {
+    Base* b = new Derived();
+    b->show();   // Output: Derived (virtual)
+    b->shadow(); // Output: Base (shadowing)
+    delete b;
+}
+```
+
 * **What are pure virtual functions?**  
 Pure virtual function is the function in the base class with no body. Since no body, you have to add the notation =0 for declaration of the pure virtual function in the base class. The base class with pure virtual function can't be instantiated since there is no definition of the function in the base class. Derived class **Have to** override pure virtual function. This type of class with one or more pure virtual function is called abstract class which can't be instantiated, it can only be inherited.
 
